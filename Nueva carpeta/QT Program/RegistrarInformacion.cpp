@@ -57,7 +57,7 @@ char*** CrearHorario (int Horas_Dormir, int Hora_Acostarse)
             Semana[i][j][8]='\0';
             for ( int k=0;k<8;k++)
             {
-                Semana[i][j][k]='1';
+                Semana[i][j][k]='-';
             }
         }
     }
@@ -68,7 +68,7 @@ char*** CrearHorario (int Horas_Dormir, int Hora_Acostarse)
         {
             for ( int j = 0; j<8; j++)
             {
-                Semana[i][k][j]='0';
+                Semana[i][k][j]='*';
             }
         }
     }
@@ -78,7 +78,7 @@ char*** CrearHorario (int Horas_Dormir, int Hora_Acostarse)
         {
             for ( int j = 0; j<8; j++)
             {
-                Semana[i][k][j]='0';
+                Semana[i][k][j]='*';
             }
         }
     }
@@ -110,4 +110,73 @@ void ImprimirHorario (char*** Horario)
         }
         cout<<endl;
     }
+    cout<<endl<<endl<<"\tCONVENCIONES: '********': Hora programada para dormir,'--------': Hora libre,'+(Codigo de la materia)': Clase con docente de la materia (Codigo de la materia)";
+    cout<<endl<<"\t\t\t'-(Codigo de la materia): Hora de estudio independiente para la materia (Codigo de la materia)."<<endl;
+    cout<<endl<<endl;
+}
+
+void ImprimirNombreMateria (char*** Matriz, int Posicion)
+{
+    int j=0;
+    while (Matriz[Posicion][0][j] != '\0')
+    {
+        cout<<Matriz[Posicion][0][j];
+        j++;
+    }
+    cout<<endl;
+}
+
+void RegistrarClase (char*** Horario, int Dia, int HoraInicio, int HoraFinal, char Codigo[])
+{
+    int j;
+    Horario[Dia][HoraInicio][0] = '+';
+    Horario[Dia][HoraFinal-1][0] = '+';
+    for ( int horas =HoraInicio;horas<HoraFinal; horas++ )
+    {
+        j = 1;
+        Horario[Dia][horas][0]='+';
+        for (int i=0; i<7;i++)
+        {
+            Horario[Dia][horas][j] = Codigo[i];
+            j++;
+        }
+    }
+
+}
+
+void ImprimirDiasSemana()
+{
+    cout<<"1.Lunes    \t\t2.Martes"<<endl;
+    cout<<"3.Miercoles\t\t4.jueves"<<endl;
+    cout<<"5.Viernes  \t\t6.Sabado"<<endl;
+    cout<<"\t7.Domingo "<<endl;
+    cout<<endl;
+}
+
+void ImprimirConenciones (char*** Matriz, int Posiciones[], int Materias)
+{
+    int j=0;
+    for (int i=0;i<Materias;i++)
+    {
+        j=0;
+        while (Matriz[Posiciones[i]][1][j] != '\0')
+        {
+            cout<<Matriz[Posiciones[i]][1][j];
+            j++;
+        }
+        cout<<":";
+        j=0;
+        while (Matriz[Posiciones[i]][0][j] != '\0')
+        {
+            cout<<Matriz[Posiciones[i]][0][j];
+            j++;
+        }
+        cout<<"\t";
+    }
+    cout<<endl;
+}
+
+int ImportarCreditos (char*** Matriz, int Posicion)
+{
+    return Char2Int(Matriz[Posicion][4][0]);
 }
