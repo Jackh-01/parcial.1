@@ -1,10 +1,40 @@
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cmath>
 #include "GestionInformacion.h"
 
 using namespace std;
+
+void leerArchivo()
+{
+    ifstream archivo("MenuPrincipal.txt");
+    if (!archivo){
+        cout << "No se pudo abrir el archivo." << endl;
+        return;
+    }
+    char caracter;
+    while (archivo.get(caracter)){
+        cout << caracter;
+    }
+    archivo.close();
+}
+int contarCaracteres(char nombre[])
+{
+    int contador = 0;
+    while (nombre[contador] != '\0') {
+        contador++;
+    }
+    return contador;
+}
+
+char convertir_a_mayuscula(char caracter_minuscula)
+{
+    if (caracter_minuscula >= 'a' && caracter_minuscula <= 'z')
+    {
+        return caracter_minuscula - 32;
+    } else
+    {
+        return caracter_minuscula;
+    }
+}
 
 bool ExisteMateria (char*** BaseDatos, char Codigo[], int Subjects)
 {
@@ -110,8 +140,9 @@ void ImprimirHorario (char*** Horario)
         }
         cout<<endl;
     }
-    cout<<endl<<endl<<"\tCONVENCIONES: '********': Hora programada para dormir,'--------': Hora libre,'+(Codigo de la materia)': Clase con docente de la materia (Codigo de la materia)";
-    cout<<endl<<"\t\t\t'-(Codigo de la materia): Hora de estudio independiente para la materia (Codigo de la materia)."<<endl;
+    cout<<endl<<endl<<"\t\tCONVENCIONES: '********': Hora programada para dormir,'--------': Hora libre,'(Nombre de la materia en mayuscula)': Clase con docente";
+    cout<<endl<<"\t\t\t\t\t'-(Nombre de la materia): Hora de estudio independiente."<<endl;
+    cout<<"********************************************************************************************************************************************************************************"<<endl;
     cout<<endl<<endl;
 }
 
@@ -126,19 +157,16 @@ void ImprimirNombreMateria (char*** Matriz, int Posicion)
     cout<<endl;
 }
 
-void RegistrarClase (char*** Horario, int Dia, int HoraInicio, int HoraFinal, char Codigo[])
+void RegistrarClase ( char *** Matriz, char*** Horario, int Dia, int HoraInicio, int HoraFinal, char Codigo[], int Posicion)
 {
     int j;
     Horario[Dia][HoraInicio][0] = '+';
     Horario[Dia][HoraFinal-1][0] = '+';
     for ( int horas =HoraInicio;horas<HoraFinal; horas++ )
     {
-        j = 1;
-        Horario[Dia][horas][0]='+';
-        for (int i=0; i<7;i++)
+        for (int i=0; i<8;i++)
         {
-            Horario[Dia][horas][j] = Codigo[i];
-            j++;
+            Horario[Dia][horas][i] = convertir_a_mayuscula(Matriz[Posicion][0][i]);
         }
     }
 
@@ -146,10 +174,10 @@ void RegistrarClase (char*** Horario, int Dia, int HoraInicio, int HoraFinal, ch
 
 void ImprimirDiasSemana()
 {
-    cout<<"1.Lunes    \t\t2.Martes"<<endl;
-    cout<<"3.Miercoles\t\t4.jueves"<<endl;
-    cout<<"5.Viernes  \t\t6.Sabado"<<endl;
-    cout<<"\t7.Domingo "<<endl;
+    cout<<"\t\t\t\t\t1.Lunes    \t\t\t2.Martes"<<endl;
+    cout<<"\t\t\t\t\t3.Miercoles\t\t\t4.jueves"<<endl;
+    cout<<"\t\t\t\t\t5.Viernes  \t\t\t6.Sabado"<<endl;
+    cout<<"\t\t\t\t\t\t\t7.Domingo "<<endl;
     cout<<endl;
 }
 

@@ -1,7 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cmath>
 #include "GestionInformacion.h"
 #include "RegistrarInformacion.h"
 
@@ -129,8 +126,12 @@ void HorasEstudioAutomatico ( char*** Matriz, char*** Horario, int Posiciones[],
 
 char*** CargarHorario(char nombreArchivo[])
 {
-    ifstream archivo(nombreArchivo); // Abrimos el archivo para lectura
-
+    std::ifstream archivo(nombreArchivo, std::ios::in | std::ios::ate);
+    int tamano = archivo.tellg();
+    archivo.seekg(0);
+    char* contenido = new char[tamano];
+    archivo.read(contenido, tamano);
+    int contador_contenido = 0;
     char*** semana = new char**[7];
     for (int i = 0; i < 7; i++) {
         semana[i] = new char*[24];
@@ -138,11 +139,12 @@ char*** CargarHorario(char nombreArchivo[])
             semana[i][j] = new char[9];
             semana[i][j][8] = '\0';
             for (int k = 0; k < 8; k++) {
-                archivo >> semana[i][j][k]; // Leemos el caracter del archivo
+                semana[i][j][k] =contenido[contador_contenido];
+                contador_contenido++;
             }
         }
     }
-
+    delete[] contenido;
     archivo.close(); // Cerramos el archivo
     return semana;
 }
@@ -215,6 +217,6 @@ void distribucionProporcional(int horasEstudio, int horasLibres[], int diasSeman
         proporciones[i] = (double)horasLibres[i] / totalHorasLibres;
     }
     for (int i = 0; i < diasSemana; i++) {
-        horasLibres[i] = round(horasEstudio * proporciones[i]);
+        horasLibres[i] = roundnumber(horasEstudio * proporciones[i]);
     }
 }
