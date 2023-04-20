@@ -17,5 +17,6 @@ void RegistrarClase (char *** Matriz,char*** Horario, int Dia, int HoraInicio, i
 void ImprimirDiasSemana();
 void ImprimirConenciones (char*** Matriz, int Posiciones[], int Materias);
 int ImportarCreditos (char*** Matriz, int Posicion);
+void DeleteHorario (char*** Semana);
 
 #endif // REGISTRARINFORMACION_H

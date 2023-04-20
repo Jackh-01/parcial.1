@@ -4,7 +4,6 @@
 
 void LetreroHorasEstudio();
 int CalcularEstudioIndependiente (char*** Matriz, int Posiciones[],int Materias);
-int CalcularEstudioProfesor (char*** Matriz, int Posiciones[],int Materias);
 void HorasClaseDia (char*** Semana, int ClasesPorDia[]);
 void HorasLibresDia (char*** Semana, int HorasLibresPorDia[]);
 void RepartirHorasEstudio (char*** Matriz, int Posiciones[], int Materias,int HorasRepartidas[] );

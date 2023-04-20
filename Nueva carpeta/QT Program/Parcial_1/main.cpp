@@ -2,18 +2,17 @@
 #include "GestionInformacion.h"
 #include "RegistrarInformacion.h"
 #include "HorasIndependientes.h"
-#include<conio.h>
+
 
 using namespace std;
 
 int main()
 {
-    getch();
     /* FASE 1: IMPORTAR INFORMACIÓN */
 
     char* Informacion;
     int* Posiciones;
-    char*** Matriz;    
+    char*** Matriz;
     Informacion = Open_File();
     int materias = Count_Subjects(Informacion);
     Posiciones = Positions_Signs(Informacion,materias);
@@ -54,7 +53,7 @@ int main()
         cout<<endl;
         cout<<endl;
         int n,n_aux, PosicionMateria,i=0, HorasDormir,HoraAcostarse, ClasesSemana,DiaClase, HoraInicio, Horafinal, j=0;
-        char CodigoMateria[7];
+        char* CodigoMateria = new char[7];
         char*** Horario;
         cout << "\t\t\t\t\t ¿ Cuantas horas diarias quiere dormir ? ( Recomendado 8 ): ";
         cin >> HorasDormir;
@@ -97,7 +96,7 @@ int main()
             PosicionMateria = BuscarMateria(Matriz,CodigoMateria,materias);
             MateriasMatriculadas[P_M]=PosicionMateria;
             P_M++;
-            Creditos_Acumulados+=ImportarCreditos(Matriz,PosicionMateria);            
+            Creditos_Acumulados+=ImportarCreditos(Matriz,PosicionMateria);
             if (Creditos_Acumulados>=CreditosMaximos)
             {
                 cout<<"\t\t\t\t\t *****ALERTA: LIMITE DE CREDITOS EXCEDIDOS, NO PODRA REGISTAR MAS MATERIAS.*****"<<endl;
@@ -141,6 +140,7 @@ int main()
             }
             i++;
         }
+
         cout<<endl;
         ImprimirHorario(Horario);
         ImprimirConenciones(Matriz,MateriasMatriculadas, n_aux);
@@ -163,18 +163,14 @@ int main()
             cout<<endl;
         }
         int* HorasLibres = new int[7];
-        int *HorasLibres_1 = new int[7];
         int *ClasesDia = new int[7];
-        int HorasEstudio, HorasClases, HorasPorDia;
+        int HorasEstudio ;
         HorasEstudio = CalcularEstudioIndependiente(Matriz,MateriasMatriculadas,n_aux);
         if (opcion_3 == 1)
         {
 
-            HorasClases = CalcularEstudioProfesor(Matriz,MateriasMatriculadas,n_aux);
             HorasClaseDia(Horario,ClasesDia);
             HorasLibresDia (Horario, HorasLibres);
-            HorasLibresDia (Horario, HorasLibres_1);
-            HorasPorDia = (HorasEstudio+HorasClases)/7;;
             distribucionProporcional(HorasEstudio, HorasLibres, 7);
             if (ContarHoras(HorasLibres)>HorasEstudio)
                 {
@@ -189,9 +185,13 @@ int main()
         else
         {
             HorasEstudioManual(Matriz,Horario,MateriasMatriculadas,n_aux,HorasEstudio);
-        }
-        std::ofstream output_file(UserName, std::ofstream::out | std::ofstream::trunc);
 
+        }
+        delete[] HorasLibres;
+        delete[] ClasesDia;
+        DeleteBaseDatos (Matriz,materias);
+        delete[] Tamano_materias;
+        std::ofstream output_file(UserName, std::ofstream::out | std::ofstream::trunc);
         if (output_file) {
             for (int i = 0; i < 7; i++)
             {
@@ -203,13 +203,13 @@ int main()
                     }
                 }
             }
-        } else {
+        } else
+        {
           cout << "No se pudo crear el archivo '" << UserName << ".txt'.\n";
         }
-
         output_file.close();
-    }
-    delete[] Tamano_materias;
-    DeleteBaseDatos (Matriz,materias);
+        DeleteHorario(Horario);
+        delete[] CodigoMateria;
 
+    }
 }

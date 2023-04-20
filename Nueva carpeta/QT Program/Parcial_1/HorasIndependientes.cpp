@@ -29,15 +29,6 @@ int CalcularEstudioIndependiente (char*** Matriz, int Posiciones[],int Materias)
     return contador;
 }
 
-int CalcularEstudioProfesor (char*** Matriz, int Posiciones[],int Materias)
-{
-    int contador=0;
-    for ( int i = 0 ; i < Materias ; i++)
-    {
-        contador+=Char2Int(Matriz[Posiciones[i]][2][0]);
-    }
-    return contador;
-}
 
 void HorasClaseDia (char*** Semana, int ClasesPorDia[])
 {
@@ -260,3 +251,4 @@ void distribucionProporcional(int horasEstudio, int horasLibres[], int diasSeman
         horasLibres[i] = roundnumber(horasEstudio * proporciones[i]);
     }
 }
+

@@ -241,3 +241,15 @@ int ImportarCreditos (char*** Matriz, int Posicion)
 {
     return Char2Int(Matriz[Posicion][4][0]);
 }
+
+
+void DeleteHorario (char*** Semana)
+{
+    for ( int i = 0; i<7 ; i++)
+    {
+        for ( int j = 0; i<24 ; j++)
+        {
+            delete[] Semana[i][j];
+        }
+    }
+}
